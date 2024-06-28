@@ -1,6 +1,14 @@
-#include "Pointer.h"
+#include "Pawn.h"
 
-int Pointer::draw(SDL_Renderer* renderer, Sint32 x, Sint32 y) {
+Pawn::Pawn(int boardWidth, int boardHeight, int padding = 8, int x, int y) {
+	this->padding = padding;
+	this->x = x;
+	this->y = y;
+	width = (boardWidth / 3) - (2 * padding);
+	height = (boardHeight / 3) - (2 * padding);
+}
+
+int Pawn::draw(SDL_Renderer* renderer, Sint32 x, Sint32 y) {
 	Uint8* r = new Uint8(),
 		* g = new Uint8(),
 		* b = new Uint8(),
@@ -12,10 +20,11 @@ int Pointer::draw(SDL_Renderer* renderer, Sint32 x, Sint32 y) {
 	if (err != 0) return err;
 
 	// Set pointer color
-	err = SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	err = SDL_SetRenderDrawColor(renderer, 50, 200, 50, 255);
 	if (err != 0) return err;
 
-	SDL_Rect rect{ x - width / 2, y - height / 2, width, height };
+	// Draw
+	SDL_Rect rect{ x + padding, y + padding, width, height };
 	err = SDL_RenderFillRect(renderer, &rect);
 	if (err != 0) return err;
 
@@ -23,4 +32,3 @@ int Pointer::draw(SDL_Renderer* renderer, Sint32 x, Sint32 y) {
 	err = SDL_SetRenderDrawColor(renderer, *r, *g, *b, *a);
 	return err;
 }
-
