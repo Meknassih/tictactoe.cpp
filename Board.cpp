@@ -1,8 +1,12 @@
 #include "Board.h"
+#include <stdexcept>
 
 Board::Board(int windowWidth, int windowHeight) {
 	this->windowWidth = windowWidth;
 	this->windowHeight = windowHeight;
+	for (int i = 0; i < sizeof(pawns) / sizeof(Pawn*); i++) {
+		pawns[i] = nullptr;
+	}
 }
 
 int Board::draw(SDL_Renderer* renderer, Sint32 offsetX, Sint32 offsetY) {
@@ -41,4 +45,28 @@ int Board::draw(SDL_Renderer* renderer, Sint32 offsetX, Sint32 offsetY) {
 	// Reset to previous draw color
 	err = SDL_SetRenderDrawColor(renderer, *r, *g, *b, *a);
 	return err;
+}
+
+void Board::createPawnAt(int row, int col) {
+	int x, y;
+	getPosForSlot(row, col, &x, &y);
+	Pawn* pawn = new Pawn(windowWidth, windowHeight, 8, x, y);
+	int i = pushIntoPawnArray(pawn);
+	if (i < 0) throw std::range_error("Board is full");
+}
+
+void Board::getPosForSlot(int row, int col, int* x, int* y)
+{
+	*x = (windowWidth / 3)* row;
+	*y = (windowHeight / 3)* col;
+}
+
+int Board::pushIntoPawnArray(Pawn* pawn) {
+	for (int i = 0; i < sizeof(pawns) / sizeof(Pawn*); i++) {
+		if (pawns[i] == nullptr) {
+			pawns[i] = pawn;
+			return i;
+		}
+	}
+	return -1;
 }

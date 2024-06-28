@@ -1,6 +1,6 @@
 #include "Pawn.h"
 
-Pawn::Pawn(int boardWidth, int boardHeight, int padding = 8, int x, int y) {
+Pawn::Pawn(int boardWidth, int boardHeight, int padding, int x, int y) {
 	this->padding = padding;
 	this->x = x;
 	this->y = y;
