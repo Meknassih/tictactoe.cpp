@@ -61,7 +61,7 @@ int Board::drawPawns(SDL_Renderer* renderer) {
 void Board::createPawnCrossAt(int row, int col) {
 	int x, y;
 	getPosForSlot(row, col, &x, &y);
-	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, x, y);
+	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, 10, x, y);
 	int i = pushIntoPawnArray(pawn);
 	if (i < 0) throw std::range_error("Board is full");
 }
@@ -69,7 +69,7 @@ void Board::createPawnCrossAt(int row, int col) {
 void Board::createPawnCircleAt(int row, int col) {
 	int x, y;
 	getPosForSlot(row, col, &x, &y);
-	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, x, y);
+	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, 10, x, y);
 	int i = pushIntoPawnArray(pawn);
 	if (i < 0) throw std::range_error("Board is full");
 }

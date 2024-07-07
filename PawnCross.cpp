@@ -1,8 +1,11 @@
 #include "PawnCross.h"
+#include <math.h>
+#include <stdexcept>
 
-PawnCross::PawnCross(int boardWidth, int boardHeight, int padding, int x, int y) 
+PawnCross::PawnCross(int boardWidth, int boardHeight, int padding, int thickness, int x, int y) 
 	: Pawn(boardWidth, boardHeight, padding, x, y)
 {
+	this->thickness = thickness;
 }
 
 int PawnCross::draw(SDL_Renderer* renderer)
@@ -23,10 +26,41 @@ int PawnCross::draw(SDL_Renderer* renderer)
 
 	// Seg1 goes from top left to bottom right
 	// Seg2 goes from bottom left to top right
-	int seg1StarttopRight[2] = {this->width / 10, 0};
-	int seg1EndtopRight[2] = {this->width -1, (this->height / 10) * 9 };
-	err = SDL_RenderDrawLine(renderer, seg1StarttopRight[0], seg1StarttopRight[1], seg1EndtopRight[0], seg1EndtopRight[1]);
-	if (err != 0) return err;
+	int seg1StarttopRight[2] = { this->width / 10, 0 };
+	int seg1EndtopRight[2] = { this->width - 1, (this->height / 10) * 9 };
+
+	// Using Pythagoras theorem for isosceles right triangle : c^2 + c^2 = k^2
+	int offset = (int)round(thickness / sqrt(2));
+
+	// Allocate n segments for each vertex of the cross
+	int segCount = this->thickness * 2;
+	struct Segment* segments = (struct Segment*)malloc(sizeof(Segment) * segCount);
+	if (segments == NULL) {
+		throw std::runtime_error("Could not allocate segments");
+	}
+	for (int i = 0; i < segCount / 2; i++) {
+		segments[i].sx = offset - i + padding;
+		segments[i].sy = i + padding;
+		segments[i].ex = width - i + padding;
+		segments[i].ey = (height - offset) + i + padding;
+	}
+	int j = 0;
+	for (int i = segCount / 2; i < segCount; i++) {
+		segments[i].sx = (width - offset) + j + padding;
+		segments[i].sy = j + padding;
+		segments[i].ex = j + padding;
+		segments[i].ey = (height - offset) + j + padding;
+		j++;
+	}
+
+	for (int i = 0; i < segCount; i++) {
+		err = SDL_RenderDrawLine(renderer, segments[i].sx, segments[i].sy, segments[i].ex, segments[i].ey);
+		if (err != 0) {
+			free(segments);
+			return err;
+		}
+	}
+	free(segments);
 
 	// Reset to previous draw color
 	err = SDL_SetRenderDrawColor(renderer, *r, *g, *b, *a);
