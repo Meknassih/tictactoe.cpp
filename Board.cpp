@@ -1,5 +1,6 @@
 #include "Board.h"
 #include <stdexcept>
+#include "PawnCross.h"
 
 Board::Board(int windowWidth, int windowHeight) {
 	this->windowWidth = windowWidth;
@@ -42,15 +43,33 @@ int Board::draw(SDL_Renderer* renderer, Sint32 offsetX, Sint32 offsetY) {
 		if (err != 0) return err;
 	}
 
+	err = drawPawns(renderer);
+	if (err != 0) return err;
+
 	// Reset to previous draw color
 	err = SDL_SetRenderDrawColor(renderer, *r, *g, *b, *a);
 	return err;
 }
 
-void Board::createPawnAt(int row, int col) {
+int Board::drawPawns(SDL_Renderer* renderer) {
+	for (int i = 0; i < sizeof(pawns) / sizeof(Pawn); i++) {
+		int err = pawns[i]->draw(renderer);
+		if (err != 0) return err;
+	}
+}
+
+void Board::createPawnCrossAt(int row, int col) {
 	int x, y;
 	getPosForSlot(row, col, &x, &y);
-	Pawn* pawn = new Pawn(windowWidth, windowHeight, 8, x, y);
+	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, x, y);
+	int i = pushIntoPawnArray(pawn);
+	if (i < 0) throw std::range_error("Board is full");
+}
+
+void Board::createPawnCircleAt(int row, int col) {
+	int x, y;
+	getPosForSlot(row, col, &x, &y);
+	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, x, y);
 	int i = pushIntoPawnArray(pawn);
 	if (i < 0) throw std::range_error("Board is full");
 }

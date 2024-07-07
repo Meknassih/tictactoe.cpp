@@ -3,12 +3,12 @@
 
 class Pawn
 {
-private:
+protected:
 	int width, height, padding;
 
 public:
 	int x, y;
 	Pawn(int boardWidth, int boardHeight, int padding, int x, int y);
-	int draw(SDL_Renderer* renderer, Sint32 x, Sint32 y);
+	virtual int draw(SDL_Renderer* renderer) = 0;
 };
 

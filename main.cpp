@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Pointer.h"
 #include "Board.h"
+#include "PawnCross.h"
 
 int main(int argc, char* args[]) {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS);
@@ -12,7 +13,7 @@ int main(int argc, char* args[]) {
     int mousex = 0, mousey = 0; // position of the mouse
     Pointer *pointer = new Pointer();
     Board *board = new Board(windowSize, windowSize);
-    board->createPawnAt(0, 0);
+    board->createPawnCrossAt(0, 0);
 
     while (true) {
         SDL_Event e;
