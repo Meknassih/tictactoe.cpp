@@ -52,32 +52,38 @@ int Board::draw(SDL_Renderer* renderer, Sint32 offsetX, Sint32 offsetY) {
 }
 
 int Board::drawPawns(SDL_Renderer* renderer) {
-	for (int i = 0; i < sizeof(pawns) / sizeof(Pawn); i++) {
+	for (int i = 0; i < BOARD_SLOTS_COUNT; i++) {
+		if (pawns[i] == nullptr)
+			continue;
 		int err = pawns[i]->draw(renderer);
 		if (err != 0) return err;
 	}
 }
 
 void Board::createPawnCrossAt(int row, int col) {
-	int x, y;
-	getPosForSlot(row, col, &x, &y);
+	int x = getXForRow(row),
+		y = getYForCol(col);
 	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, 10, x, y);
 	int i = pushIntoPawnArray(pawn);
 	if (i < 0) throw std::range_error("Board is full");
 }
 
 void Board::createPawnCircleAt(int row, int col) {
-	int x, y;
-	getPosForSlot(row, col, &x, &y);
+	int x = getXForRow(row),
+		y = getYForCol(col);
 	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, 10, x, y);
 	int i = pushIntoPawnArray(pawn);
 	if (i < 0) throw std::range_error("Board is full");
 }
 
-void Board::getPosForSlot(int row, int col, int* x, int* y)
+int Board::getXForRow(int row) const
 {
-	*x = (windowWidth / 3)* row;
-	*y = (windowHeight / 3)* col;
+	return (windowWidth / 3) * row +  BOARD_GRID_THICKNESS;
+}
+
+int Board::getYForCol(int col) const
+{
+	return (windowWidth / 3) * col +  BOARD_GRID_THICKNESS;
 }
 
 int Board::pushIntoPawnArray(Pawn* pawn) {

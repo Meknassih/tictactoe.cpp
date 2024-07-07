@@ -13,6 +13,9 @@ int main(int argc, char* args[]) {
     int mousex = 0, mousey = 0; // position of the mouse
     Pointer *pointer = new Pointer();
     Board *board = new Board(windowSize, windowSize);
+    board->createPawnCrossAt(2, 0);
+    board->createPawnCrossAt(1, 1);
+    board->createPawnCrossAt(0, 2);
     board->createPawnCrossAt(0, 0);
 
     while (true) {

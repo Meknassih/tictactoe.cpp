@@ -24,11 +24,6 @@ int PawnCross::draw(SDL_Renderer* renderer)
 	err = SDL_SetRenderDrawColor(renderer, 200, 50, 50, 255);
 	if (err != 0) return err;
 
-	// Seg1 goes from top left to bottom right
-	// Seg2 goes from bottom left to top right
-	int seg1StarttopRight[2] = { this->width / 10, 0 };
-	int seg1EndtopRight[2] = { this->width - 1, (this->height / 10) * 9 };
-
 	// Using Pythagoras theorem for isosceles right triangle : c^2 + c^2 = k^2
 	int offset = (int)round(thickness / sqrt(2));
 
@@ -39,17 +34,17 @@ int PawnCross::draw(SDL_Renderer* renderer)
 		throw std::runtime_error("Could not allocate segments");
 	}
 	for (int i = 0; i < segCount / 2; i++) {
-		segments[i].sx = offset - i + padding;
-		segments[i].sy = i + padding;
-		segments[i].ex = width - i + padding;
-		segments[i].ey = (height - offset) + i + padding;
+		segments[i].sx = this->x + (offset - i) + padding;
+		segments[i].sy = this->y + i + padding;
+		segments[i].ex = this->x + (width - i) - padding;
+		segments[i].ey = this->y + (height - offset) + i - padding;
 	}
 	int j = 0;
 	for (int i = segCount / 2; i < segCount; i++) {
-		segments[i].sx = (width - offset) + j + padding;
-		segments[i].sy = j + padding;
-		segments[i].ex = j + padding;
-		segments[i].ey = (height - offset) + j + padding;
+		segments[i].sx = this->x + (width - offset) + j - padding;
+		segments[i].sy = this->y + j + padding;
+		segments[i].ex = this->x + j + padding;
+		segments[i].ey = this->y + (height - offset) + j - padding;
 		j++;
 	}
 
