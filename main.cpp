@@ -14,9 +14,11 @@ int main(int argc, char* args[]) {
     Pointer *pointer = new Pointer();
     Board *board = new Board(windowSize, windowSize);
     board->createPawnCrossAt(2, 0);
-    board->createPawnCrossAt(1, 1);
+    board->createPawnCircleAt(1, 1);
     board->createPawnCrossAt(0, 2);
     board->createPawnCrossAt(0, 0);
+    board->createPawnCircleAt(1, 2);
+    board->createPawnCircleAt(2, 1);
 
     while (true) {
         SDL_Event e;

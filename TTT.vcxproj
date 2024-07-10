@@ -133,12 +133,14 @@
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pawn.cpp" />
+    <ClCompile Include="PawnCircle.cpp" />
     <ClCompile Include="PawnCross.cpp" />
     <ClCompile Include="Pointer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Pawn.h" />
+    <ClInclude Include="PawnCircle.h" />
     <ClInclude Include="PawnCross.h" />
     <ClInclude Include="Pointer.h" />
   </ItemGroup>

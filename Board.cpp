@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <stdexcept>
 #include "PawnCross.h"
+#include "PawnCircle.h"
 
 Board::Board(int windowWidth, int windowHeight) {
 	this->windowWidth = windowWidth;
@@ -71,7 +72,7 @@ void Board::createPawnCrossAt(int row, int col) {
 void Board::createPawnCircleAt(int row, int col) {
 	int x = getXForRow(row),
 		y = getYForCol(col);
-	PawnCross* pawn = new PawnCross(windowWidth, windowHeight, 8, 10, x, y);
+	PawnCircle* pawn = new PawnCircle(windowWidth, windowHeight, 8, 30, x, y);
 	int i = pushIntoPawnArray(pawn);
 	if (i < 0) throw std::range_error("Board is full");
 }
